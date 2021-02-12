@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../models/restaurants");
 
+// --------------------------------------------------------------------------------
 // Fetch all restaurants - Supports Sorting
 router.get("/", async (req, res) => {
     let restaurants;
@@ -15,10 +16,10 @@ router.get("/", async (req, res) => {
     }
 
     // Fetch restaurants
-    if(sort_by == "rating") restaurants = await db.find().sort({ rating: order });
-    else if (sort_by == "price_level") restaurants = await db.find().sort({ price_level: order })
-    else if (sort_by == "name") restaurants = await db.find().sort({ name: order })  
-    else restaurants = await db.find().sort({ id: order })
+    if(sort_by == "rating") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ rating: order });
+    else if (sort_by == "price_level") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ price_level: order })
+    else if (sort_by == "name") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ name: order })  
+    else restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ id: order })
 
     // if restaurant(s) exists in DB
     if (restaurants.length >= 1){
@@ -36,9 +37,17 @@ router.get("/", async (req, res) => {
     .end();
 });
 
+// --------------------------------------------------------------------------------
 // Add a new restaurant
 router.post("/", async (req, res) => {
-    
+
+    // assign id value for new document by fetching the lastest id value in the collection
+    let id = await db.findOne().sort({id:-1}).limit(1)
+    .then((restaurant) => {
+        if(restaurant) return restaurant.id + 1
+        else return 0})
+    .catch(err => console.log("Error creating id: ", err.message))
+
     const restaurant = db({
         opening_hours: req.body.opening_hours,
         address: req.body.address,
@@ -51,6 +60,7 @@ router.post("/", async (req, res) => {
         google_maps_url: req.body.google_maps_url,
         website: req.body.website,
         photo: req.body.photo,
+        id: id
     });
 
     // try adding restaurant instance to DB
@@ -72,19 +82,72 @@ router.post("/", async (req, res) => {
     }
 });
 
+// --------------------------------------------------------------------------------
 // Add >1 restaurants
-router.post("/multiple/", async (req, res) => {
+router.post("/multiple", async (req, res) => {
+    data = req.body.restaurants;
+    let instance;
 
-    // try adding multiple restaurants instance to DB
-    try {
-        const result = await db.insertMany(req.body.restaurants);
-        console.log("Created: ", result);
+    // assign id value for new document by fetching the lastest id value in the collection
+    let id = await db.findOne().sort({id:-1}).limit(1)
+    .then((restaurant) => {
+        if(restaurant) return restaurant.id + 1
+        else return 0})
+    .catch(err => console.log("Error creating id: ", err.message))
+    
+    for (i = 0; i < data.length; i++){
+        instance = db({
+            opening_hours: data[i]['opening_hours'],
+            address: data[i]['address'],
+            phone_number: data[i]['phone_number'],
+            location: data[i]['location'],
+            icon: data[i]['icon'],
+            name: data[i]['name'],
+            price_level: data[i]['price_level'],
+            rating: data[i]['rating'],
+            google_maps_url: data[i]['google_maps_url'],
+            website: data[i]['website'],
+            photo: data[i]['photo'],
+            id: id            
+        })
+
+        // try adding multiple restaurants instance to DB
+        try {
+            await instance.save();
+            console.log("Created id:", id);
+        } 
+        // Return exception if adding failed
+        catch (ex) {
+            console.log(ex);
+            return res
+            .status(400)
+            .json({error: true, message: ex.message})
+            .end();
+        }
+        id += 1;
+    }
+
+    return res
+    .status(200)
+    .json({error: false, message:"Restaurants Added to DB."})
+    .end();
+
+    
+});
+
+// --------------------------------------------------------------------------------
+// Delete all restaurants 
+router.delete('/all', async(req,res) => {
+    // try deleting all restaurant instances from DB 
+    try{
+        await db.deleteMany();
+        console.log("Deleted all Restaurants");
         return res
         .status(200)
-        .json({error: false, message:"Restaurants Added to DB.", data: result})
+        .json({error: false, message: "Deleted all restaurant" })
         .end();
-    } 
-    // Return exception if adding failed
+    }
+    // Return exception if deletion failed
     catch (ex) {
         console.log(ex);
         return res
@@ -92,8 +155,9 @@ router.post("/multiple/", async (req, res) => {
         .json({error: true, message: ex.message})
         .end();
     }
-});
+})
 
+// --------------------------------------------------------------------------------
 // Update an exisiting restaurant
 router.put("/:id", async (req, res) => {
     const restaurant = await db.findOne({ id: req.params.id });
@@ -138,7 +202,7 @@ router.put("/:id", async (req, res) => {
         .end();
     }
 });
-
+// --------------------------------------------------------------------------------
 // Delete an exisiting restaurant
 router.delete("/:id", async (req, res) => {
     const restaurant = await db.findOne({ id: req.params.id });
@@ -172,6 +236,7 @@ router.delete("/:id", async (req, res) => {
     }
 });
 
+// --------------------------------------------------------------------------------
 // Fetch information about a specific restaurant
 router.get("/:id", async (req, res) => {
 

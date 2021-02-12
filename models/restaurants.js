@@ -1,11 +1,12 @@
 const mongoose = require('mongoose');
+
 console.log("-----------------------")
 console.log("Awaiting DB connection")
 console.log("-----------------------")
 
 // Connect to DB
 let db; 
-if (process.env.NODE_ENV == "dev") db = "mongodb://localhost/viaplay-test"
+if (process.env.NODE_ENV === "dev") db = "mongodb://localhost/viaplay-test"
 else db = "mongodb://localhost/viaplay"  
 
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
@@ -109,12 +110,10 @@ const restaurantSchema = new mongoose.Schema({
 
     id: {
         type: Number,
-        required: true,
-        default: 0
     }
 })
 
 // Collection 
-Restaurant = mongoose.model('Restaurant', restaurantSchema)
+const Restaurant = mongoose.model('Restaurant', restaurantSchema)
 
 module.exports = Restaurant
