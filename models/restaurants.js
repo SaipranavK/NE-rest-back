@@ -6,8 +6,8 @@ console.log("-----------------------")
 
 // Connect to DB
 let db; 
-if (process.env.NODE_ENV === "dev") db = "mongodb://localhost/viaplay-test"
-else db = "mongodb://localhost/viaplay"  
+if (process.env.NODE_ENV === "dev") db = "mongodb://mongo-test:27017/viaplay-test"
+else db = "mongodb://mongo:27017/viaplay"  
 
 mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
 .then(() => console.log("Connected to", db, "\n-----------------------"))
