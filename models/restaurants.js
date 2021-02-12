@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
+console.log("-----------------------")
+console.log("Awaiting DB connection")
+console.log("-----------------------")
 
-
-console.log("Awaiting DB connection...")
 // Connect to DB
-mongoose.connect('mongodb://localhost/viaplay', {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
-.then(() => console.log("Connected to DB"))
+let db; 
+if (process.env.NODE_ENV == "dev") db = "mongodb://localhost/viaplay-test"
+else db = "mongodb://localhost/viaplay"  
+
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true})
+.then(() => console.log("Connected to", db, "\n-----------------------"))
 .catch(err => console.log("Error connecting to DB", err.message))
 
 const url_regex = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-/]))?/;
