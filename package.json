@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
+    "build": "docker-compose -f docker-compose.yml build",
     "test": "docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit",
     "production": "docker-compose -f docker-compose.yml up"
   },
