@@ -1,4 +1,6 @@
 # NENT Group Tech Trainee 2021 - Coding Challenge
+[![Build Status](https://travis-ci.com/SaipranavK/NE-rest-back.svg?token=yuqgzcJWYEqqx9oxnxVc&branch=dockerize)](https://travis-ci.com/SaipranavK/NE-rest-back)
+
 The following challenges are addressed in this build:
 
 ### Mandatory
