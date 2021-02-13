@@ -6,34 +6,67 @@ const db = require("../models/restaurants");
 // Fetch all restaurants - Supports Sorting
 router.get("/", async (req, res) => {
     let restaurants;
-    let sort_by = "id";
+    let sort_by;
     let order = 1;
+    let filter_by;
+    let filter_phrase;
+    let filter_value;
     
-    // Overwrite sort_by and order if passed in query parameters
-    if(req.query){
-        sort_by = req.query.sort_by;
-        order = req.query.order
-    }
+    // Overwrite sort and filter properties if passed in query parameters
+    if (req.query.sort_by) sort_by = req.query.sort_by;
+    if (req.query.order == -1) order = req.query.order;
+    if (req.query.filter_by) filter_by = req.query.filter_by;
+    if (req.query.filter_phrase) filter_phrase = req.query.filter_phrase;
+    if (req.query.filter_value) filter_value = req.query.filter_value;
+    
+    console.log(sort_by,filter_by,filter_phrase)
 
     // Fetch restaurants
-    if(sort_by == "rating") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ rating: order });
-    else if (sort_by == "price_level") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ price_level: order })
-    else if (sort_by == "name") restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ name: order })  
-    else restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ id: order })
+    // if request passes filter and sort properties
+    if((sort_by == "rating" || sort_by == "price_level" || sort_by == "name" || sort_by == "id") 
+        && (filter_by == "rating" || filter_by == "price_level" )
+        && (filter_phrase == "$lt" || filter_phrase == "$lte" || filter_phrase == "$gt" || filter_phrase == "$gte")
+        && filter_value !== undefined) 
+    {
+        console.log("Filter and sort routine - ",sort_by, filter_by, filter_phrase)
+        restaurants = await db.find({[filter_by]: {[filter_phrase]:filter_value}}).select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ [sort_by]: order });
+    }
+    
+    // if request passes sort properties
+    else if(sort_by == "rating" || sort_by == "price_level" || sort_by == "name" || sort_by == "id") 
+    {
+        console.log("Sort routine - ",sort_by)
+        restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ [sort_by]: order });
+    }
+    
+    // if request passes filter properties
+    else if((filter_by == "rating" || filter_by == "price" )
+            && (filter_phrase == "$lt" || filter_phrase == "$lte" || filter_phrase == "$gt" || filter_phrase == "$gte")) 
+    {
+        console.log("Filter routine - ",filter_by, filter_phrase)
+        restaurants = await db.find({[filter_by]: {[filter_phrase]:filter_value}}).select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ [sort_by]: order });
+    }
+    
+    // if request passes no or invalid properties
+    else 
+    {
+        console.log("Generic/fallback routine - ", sort_by, filter_by, filter_phrase)
+        restaurants = await db.find().select({"name": 1, "price_level": 1, "rating": 1, "id": 1}).sort({ id: order }) 
+    }    
 
     // if restaurant(s) exists in DB
     if (restaurants.length >= 1){
         console.log("Fetched restaurants")
         return res
         .status(200)
-        .json({error: false, message: restaurants.length +" restaurants found", data: restaurants})
+        .json({success: true, message: restaurants.length +" restaurants found", data: restaurants})
         .end();
     }
 
     // else if DB is empty
     return res
     .status(200)
-    .json({error: false, message: "DB empty. No restaurants found."})
+    .json({success: true, message: "No restaurants found.", data:[]})
     .end();
 });
 
