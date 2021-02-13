@@ -1,6 +1,7 @@
 FROM node:12-alpine
 WORKDIR /src/NE-rest-back/
 ENV NODE_ENV=dev
+ENV RUN=docker
 COPY package*.json ./
 RUN npm install && npm install -g mocha
 COPY . .

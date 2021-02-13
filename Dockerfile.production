@@ -1,6 +1,7 @@
 FROM node:12-alpine
 WORKDIR /src/NE-rest-back/
 ENV NODE_ENV=prod
+ENV RUN=docker
 COPY package*.json ./
 RUN npm install --only=production
 COPY . .
