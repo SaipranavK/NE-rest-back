@@ -1,5 +1,7 @@
 const express = require("express");
+const {body, validationResult} = require('express-validator');
 const router = express.Router();
+const {validate_document, validate} = require("../middleware/validators");
 const db = require("../models/restaurants");
 
 // --------------------------------------------------------------------------------
@@ -66,20 +68,20 @@ router.get("/", async (req, res) => {
     // else if DB is empty
     return res
     .status(200)
-    .json({success: true, message: "No restaurants found.", data:[]})
+    .json({success: true, message: "No restaurants found.", data: []})
     .end();
 });
 
 // --------------------------------------------------------------------------------
 // Add a new restaurant
-router.post("/", async (req, res) => {
-
+router.post("/", [validate_document(), validate], async (req, res) => {
+    
     // assign id value for new document by fetching the lastest id value in the collection
     let id = await db.findOne().sort({id:-1}).limit(1)
     .then((restaurant) => {
         if(restaurant) return restaurant.id + 1
         else return 0})
-    .catch(err => console.log("Error creating id: ", err.message))
+    .catch(err => console.log("success creating id: ", err.message))
 
     const restaurant = db({
         opening_hours: req.body.opening_hours,
@@ -102,7 +104,7 @@ router.post("/", async (req, res) => {
         console.log("Created: ", result);
         return res
         .status(200)
-        .json({error: false, message:"Restaurant Added to DB.", data: result})
+        .json({success: true, message:"Restaurant Added to DB.", data: result})
         .end();
     } 
     // Return exception if adding failed
@@ -110,7 +112,7 @@ router.post("/", async (req, res) => {
         console.log(ex);
         return res
         .status(400)
-        .json({error: true, message: ex.message})
+        .json({success: false, message: ex.message})
         .end();
     }
 });
@@ -126,7 +128,7 @@ router.post("/multiple", async (req, res) => {
     .then((restaurant) => {
         if(restaurant) return restaurant.id + 1
         else return 0})
-    .catch(err => console.log("Error creating id: ", err.message))
+    .catch(err => console.log("success creating id: ", err.message))
     
     for (i = 0; i < data.length; i++){
         instance = db({
@@ -154,7 +156,7 @@ router.post("/multiple", async (req, res) => {
             console.log(ex);
             return res
             .status(400)
-            .json({error: true, message: ex.message})
+            .json({success: false, message: ex.message})
             .end();
         }
         id += 1;
@@ -162,7 +164,7 @@ router.post("/multiple", async (req, res) => {
 
     return res
     .status(200)
-    .json({error: false, message:"Restaurants Added to DB."})
+    .json({success: true, message:"Restaurants Added to DB."})
     .end();
 
     
@@ -177,7 +179,7 @@ router.delete('/all', async(req,res) => {
         console.log("Deleted all Restaurants");
         return res
         .status(200)
-        .json({error: false, message: "Deleted all restaurant" })
+        .json({success: true, message: "Deleted all restaurant" })
         .end();
     }
     // Return exception if deletion failed
@@ -185,14 +187,14 @@ router.delete('/all', async(req,res) => {
         console.log(ex);
         return res
         .status(400)
-        .json({error: true, message: ex.message})
+        .json({success: false, message: ex.message})
         .end();
     }
 })
 
 // --------------------------------------------------------------------------------
 // Update an exisiting restaurant
-router.put("/:id", async (req, res) => {
+router.put("/:id", [validate_document(), validate], async (req, res) => {
     const restaurant = await db.findOne({ id: req.params.id });
     
     // if restaurant with supplied instane does not exists
@@ -200,7 +202,7 @@ router.put("/:id", async (req, res) => {
         console.log("Instance not found - ", req.params.id);
         return res
         .status(404)
-        .json({error: true, message: "Restaurant with supplied ID not found!"})
+        .json({success: false, message: "Restaurant with supplied ID not found!"})
         .end();
     }
     
@@ -223,7 +225,7 @@ router.put("/:id", async (req, res) => {
         console.log("Updated Restaurant: ", result);
         return res
         .status(200)
-        .json({error: false, message: "Updated restaurant", data: result});
+        .json({success: true, message: "Updated restaurant", data: result});
     } 
 
     // Return exception if updation failed
@@ -231,7 +233,7 @@ router.put("/:id", async (req, res) => {
         console.log(ex);
         return res
         .status(400)
-        .json({error: true, message: ex.message})
+        .json({success: false, message: ex.message})
         .end();
     }
 });
@@ -245,7 +247,7 @@ router.delete("/:id", async (req, res) => {
         console.log("Instance not found - ", req.params.id);
         return res
         .status(404)
-        .json({error: true, message: "Restaurant with supplied ID not found!"})
+        .json({success: false, message: "Restaurant with supplied ID not found!"})
         .end();
     }
 
@@ -255,7 +257,7 @@ router.delete("/:id", async (req, res) => {
         console.log("Deleted Restaurant: ", restaurant);
         return res
         .status(200)
-        .json({error: false, message: "Deleted restaurant", restaurant: restaurant })
+        .json({success: true, message: "Deleted restaurant", restaurant: restaurant })
         .end();
     } 
     
@@ -264,7 +266,7 @@ router.delete("/:id", async (req, res) => {
         console.log(ex);
         return res
         .status(400)
-        .json({error: true, message: ex.message})
+        .json({success: false, message: ex.message})
         .end();
     }
 });
@@ -280,14 +282,14 @@ router.get("/:id", async (req, res) => {
         console.log("Instance not found - ", req.params.id)
         return res
         .status(404)
-        .json({error:true, message: "Restaurant with supplied ID not found!"})
+        .json({success: false, message: "Restaurant with supplied ID not found!"})
         .end();
     }
 
     console.log("Restaurant: ", restaurant);
     return res
     .status(200)
-    .json({error: false, message:"Restaurant found.", data: restaurant})
+    .json({success: true, message:"Restaurant found.", data: restaurant})
     .end();
 });
 
