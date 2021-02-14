@@ -67,9 +67,13 @@ The program can be build using two methods. First method requires Docker(https:/
 Alternatively, if you prefer not to install docker, you can use this approach to run the program
 ### Non-Docker version
 1. Set environment variables<pre><code><b>export NODE_ENV=dev<br>export RUN=local</b></code></pre>This will make sure that the execution is local and thus will rely on a local server of mongo.
+
 2. Spin a local server of Mongo<pre><code><b>mongod</b></code></pre>This will create a local server of mongo. It must be kept alive and accessible on localhost(127.0.0.1) over port 27017 by default.
+
 3. Install dependencies<pre><code><b>npm i</b></code></pre>This will install all neccessary pacakges to run the program.
+
 4. Run tests<pre><code><b>npm run test-local</b></code></pre>This will run tests. It uses a different local database for testing.
+
 5. Run production<pre><code><b>npm run start</b></code></pre>This will open the server for accepting incoming requests and can be accessed on localhost(127.0.0.1) over port 3000 unless an alternative port is set as environment variable. 
 
 
