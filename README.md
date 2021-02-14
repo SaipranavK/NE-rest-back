@@ -33,7 +33,7 @@ This build is a REST API implementation that can read and write into the provide
 |<b>tests</b>
  --|<i>restaurants.test.js</i>
 |<b>.travis.yml</b>
-|<b>docker-compose.testing.yml<b>
+|<b>docker-compose.testing.yml</b>
 |<b>docker-compose.yml</b>
 |<b>Dockerfile.production</b>
 |<b>Dockerfile.testing</b>
