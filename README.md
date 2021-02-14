@@ -18,7 +18,9 @@ The following challenges are addressed in this build:
 10. Integration tests 
 11. Dockerize
 
+<img src="./assets/images/dir_tree.png">
 ---
+
 ## Usage
 ### Docker version
 1. Build the docker image
@@ -55,15 +57,39 @@ npm start
 ---
 ## Endpoints
 1. Fetch all restaunrants ==> **GET /api/v1/restaurants** 
+
+<img src="./assets/images/fetch_no_params.png">
+
 - Filtering restaurants
+
+<img src="./assets/images/fetch_filtered.png">
+
 - Sorting restaurants
+
+<img src="./assets/images/fetch_sorted.png">
+
 - Using filter and sort together
+
+<img src="./assets/images/fetch_sorted_filtered.png">
+
+---
 2. Get more information about one specific restaurant ==> **GET /api/v1/restaurants/<restaurant_id>**
+<img src="./assets/images/fetch_specific.png">
+---
 3. Add a new restaurant ==> **POST /api/v1/restaurants**
+<img src="./assets/images/add_1.png">
+---
 4. Add many restaurants at a once ==> **POST /api/v1/restaurants/multiple**
+<img src="./assets/images/add_many.png">
+---
 5. Update an exisiting restaurant ==> **PUT /api/v1/restaurants/<restaurant_id>**
+<img src="./assets/images/update.png">
+---
 6. Delete an exisiting restaurant ==> **DELETE /api/v1/restaurants/<restaurant_id>**
+<img src="./assets/images/delete_1.png">
+---
 7. Delete all restaurants ==> **DELETE /api/v1/restaurants/all**
+<img src="./assets/images/delete_all.png">
 ---
 ## Design choices
 ---
