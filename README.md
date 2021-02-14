@@ -20,7 +20,8 @@ This build is a REST API implementation that can read and write into the provide
 10. Integration tests
 11. Dockerize
 
-  
+
+
 ## Directory Structure
 <pre><code>|<b>assets/images</b>
 |<b>middleware</b>
@@ -39,21 +40,38 @@ This build is a REST API implementation that can read and write into the provide
 |<b>package-lock.json</b>
 |<b>package.json</b>
 |<b>server.js</b>
-</pre></code>
+</code></pre>
+
+- middleware/validators.js: Responsible for middleware function used for validating incoming request payload.
+- models/restaurants.js: Defines the restaurant schema and decides which database to connect based on execution environment.
+- routes/restaurants.js: Business logic for the REST API. It consists of different URLs with their respective functionality implementation accessible by the client through https requests.
+- server.js: Entry point for the program and handles all the incoming requests.
+- .travis.yml: Build automation script
+- docker-compose.yml: Docker service compose script for production build.
+- docker-compose.testing.yml: Docker service compose script for test build.
+- Dockerfile.production: Steps to build production image.
+- Dockerfile.testing: Steps to build test image.
+- package.json/package-lock.json: Dependency and run script managers.
+
+
 
 ## Usage
+The program can be build using two methods. First method requires Docker(https://www.docker.com/). 
 ### Docker version
-1. Build the docker image<pre><code><b>npm run build</b></pre></code>
+1. Build the docker image<pre><code><b>npm run build</b></code></pre>This will create the docker images for production build.
 
-2. Run tests<pre><code><b>npm run test</b></pre></code>
+2. Run tests<pre><code><b>npm run test</b></code></pre>This will create the docker image for test build and compose it with required services to start the container. The test build will perform the tests and exit execution. It uses a different test database for testing.
 
-3. Run production<pre><code><b>npm run build</b></pre></code>
+3. Run production<pre><code><b>npm run build</b></code></pre>This will run the production build by composing a container with required services. It will start the server to accept requests. The server can be accessed on localhost(127.0.0.1).
 ---
+Alternatively, if you prefer not to install docker, you can use this approach to run the program
 ### Non-Docker version
-1. Set environment variables<pre><code><b>export NODE_ENV=dev<br>export RUN=local</b></pre></code>
-2. Install dependencies<pre><code><b>npm i</b></pre></code>
-3. Run tests<pre><code><b>npm run test-local</b></pre></code>
-4. Run production<pre><code><b>npm run start</b></pre></code>
+1. Set environment variables<pre><code><b>export NODE_ENV=dev<br>export RUN=local</b></code></pre>This will make sure that the execution is local and thus will rely on a local server of mongo.
+2. Spin a local server of Mongo<pre><code><b>mongod</b></code></pre>This will create a local server of mongo. It must be kept alive and accessible on localhost(127.0.0.1) over port 27017 by default.
+3. Install dependencies<pre><code><b>npm i</b></code></pre>This will install all neccessary pacakges to run the program.
+4. Run tests<pre><code><b>npm run test-local</b></code></pre>This will run tests. It uses a different local database for testing.
+5. Run production<pre><code><b>npm run start</b></code></pre>This will open the server for accepting incoming requests and can be accessed on localhost(127.0.0.1) over port 3000 unless an alternative port is set as environment variable. 
+
 
 
 ## Endpoints
@@ -132,9 +150,12 @@ Request Type | URL | Description | Payload | Parameters |
 ### Update a restaurant
 Same as [1](#Add-new-restaurant)
 
-## Filter and sorting parameters 
-### Filter parameters
 
+
+## Filter and sorting parameters 
+Filter and sorting parameters are query parameters available only for GET /api/v1/restaurants. It helps client fetch restaurant information based on sorting and filter properties. They can be used individually or combined. Invalid query parameter requests resulting from incomplete property declaration or invalid property value will return all the restaurants in the database sorted by their id values in ascending order. 
+
+### Filter parameters
 | Properties | Options  | Description |
 |--|--|--|
 |filter_by|rating, price_level|Filter the restaurants based on their rating or price_level|
@@ -147,90 +168,76 @@ Same as [1](#Add-new-restaurant)
 |sort_by|id, name, rating, price_level|Sort the restaurants based on their id, name, rating or price_level|
 |order|-1 or 1|Choose order of arrangement with -1 for descending order and 1 for ascending order|
 
+
+
 ## Examples
-
-1. Fetch all restaurants - **GET /api/v1/restaurants**
-
-  
-
+### Fetch all restaurants
 <img  src="./assets/images/fetch_no_params.png">
 
-  
-
-- Filtering restaurants
-
-  
-
+### Filtering restaurants
 <img  src="./assets/images/fetch_filtered.png">
 
-  
-
-- Sorting restaurants
-
-  
-
+### Sorting restaurants
 <img  src="./assets/images/fetch_sorted.png">
 
-  
-
-- Using filter and sort together
-
-  
-
+### Using filter and sort together
 <img  src="./assets/images/fetch_sorted_filtered.png">
-
-  
 
 ---
 
-2.  **Get more information about one specific restaurant** - **GET /api/v1/restaurants/<restaurant_id>**
-
+### Get more information about one specific restaurant
 <img  src="./assets/images/fetch_specific.png">
 
 ---
 
-3. Add a new restaurant - **POST /api/v1/restaurants**
-
+### Add a new restaurant
 <img  src="./assets/images/add_1.png">
 
 ---
 
-4. Add many restaurants at a once - **POST /api/v1/restaurants/multiple**
-
+### Add many restaurants at a once
 <img  src="./assets/images/add_many.png">
 
 ---
 
-5. Update an exisiting restaurant - **PUT /api/v1/restaurants/<restaurant_id>**
-
+### Update an exisiting restaurant
 <img  src="./assets/images/update.png">
 
 ---
 
-6. Delete an exisiting restaurant - **DELETE /api/v1/restaurants/<restaurant_id>**
-
+### Delete an exisiting restaurant
 <img  src="./assets/images/delete_1.png">
 
 ---
 
-7. Delete all restaurants - **DELETE /api/v1/restaurants/all**
-
+### Delete all restaurants
 <img  src="./assets/images/delete_all.png">
 
----
+### Add/Update payload validation
+<img  src="./assets/images/add_req_validation.png">
+<img  src="./assets/images/update_req_validation.png">
+
+### Invalid request response
+<img  src="./assets/images/fetch_specific_invalid.png">
+<img  src="./assets/images/update_invalid.png">
+<img  src="./assets/images/delete_invalid.png">
+
+
 
 ## Design choices
 
----
+
 
 ## Improvements and bugs
 
----
+
 
 ## Afterthoughts
 
 ---
 
 **Author :** Saipranav Koyyada (saipranav_29@outlook.com)
+
 https://www.linkedin.com/in/saipranavkoyyada/
+
 Please feel free to contact for any queries or feedback.
