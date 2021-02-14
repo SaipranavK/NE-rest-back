@@ -58,23 +58,23 @@ This build is a REST API implementation that can read and write into the provide
 ## Usage
 The program can be build using two methods. First method requires Docker(https://www.docker.com/). 
 ### Docker version
-1. Build the docker image<pre><code><b>npm run build</b></code></pre>This will create the docker images for production build.
+1. **Build the docker image**<pre><code><b>npm run build</b></code></pre>This will create the docker images for production build.
 
-2. Run tests<pre><code><b>npm run test</b></code></pre>This will create the docker image for test build and compose it with required services to start the container. The test build will perform the tests and exit execution. It uses a different test database for testing.
+2. **Run tests**<pre><code><b>npm run test</b></code></pre>This will create the docker image for test build and compose it with required services to start the container. The test build will perform the tests and exit execution. It uses a different test database for testing.
 
-3. Run production<pre><code><b>npm run build</b></code></pre>This will run the production build by composing a container with required services. It will start the server to accept requests. The server can be accessed on localhost(127.0.0.1).
+3. **Run production**<pre><code><b>npm run build</b></code></pre>This will run the production build by composing a container with required services. It will start the server to accept requests. The server can be accessed on localhost(127.0.0.1).
 ---
 Alternatively, if you prefer not to install docker, you can use this approach to run the program
 ### Non-Docker version
-1. Set environment variables<pre><code><b>export NODE_ENV=dev<br>export RUN=local</b></code></pre>This will make sure that the execution is local and thus will rely on a local server of mongo.
+1. **Set environment variables**<pre><code><b>export NODE_ENV=dev<br>export RUN=local</b></code></pre>This will make sure that the execution is local and thus will rely on a local server of mongo.
 
-2. Spin a local server of Mongo<pre><code><b>mongod</b></code></pre>This will create a local server of mongo. It must be kept alive and accessible on localhost(127.0.0.1) over port 27017 by default.
+2. **Spin a local server of Mongo**<pre><code><b>mongod</b></code></pre>This will create a local server of mongo. It must be kept alive and accessible on localhost(127.0.0.1) over port 27017 by default.
 
-3. Install dependencies<pre><code><b>npm i</b></code></pre>This will install all neccessary pacakges to run the program.
+3. **Install dependencies**<pre><code><b>npm i</b></code></pre>This will install all neccessary pacakges to run the program.
 
-4. Run tests<pre><code><b>npm run test-local</b></code></pre>This will run tests. It uses a different local database for testing.
+4. **Run tests**<pre><code><b>npm run test-local</b></code></pre>This will run tests. It uses a different local database for testing.
 
-5. Run production<pre><code><b>npm run start</b></code></pre>This will open the server for accepting incoming requests and can be accessed on localhost(127.0.0.1) over port 3000 unless an alternative port is set as environment variable. 
+5. **Run production**<pre><code><b>npm run start</b></code></pre>This will open the server for accepting incoming requests and can be accessed on localhost(127.0.0.1) over port 3000 unless an alternative port is set as environment variable. 
 
 
 
@@ -217,9 +217,13 @@ Filter and sorting parameters are query parameters available only for GET /api/v
 ### Delete all restaurants
 <img  src="./assets/images/delete_all.png">
 
+---
+
 ### Add/Update payload validation
 <img  src="./assets/images/add_req_validation.png">
 <img  src="./assets/images/update_req_validation.png">
+
+---
 
 ### Invalid request response
 <img  src="./assets/images/fetch_specific_invalid.png">
