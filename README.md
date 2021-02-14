@@ -1,7 +1,7 @@
 
 # NENT Group Tech Trainee 2021 - Coding Challenge
 
-[![Build Status](https://travis-ci.com/SaipranavK/NE-rest-back.svg?token=yuqgzcJWYEqqx9oxnxVc&branch=freeze)](https://travis-ci.com/SaipranavK/NE-rest-back)
+[![Build Status](https://travis-ci.com/SaipranavK/NE-rest-back.svg?token=yuqgzcJWYEqqx9oxnxVc&branch=main)](https://travis-ci.com/SaipranavK/NE-rest-back)
 
 This build is a REST API implementation that can read and write into the provided db while providing endpoints to clients from which they will be able to perform basic CRUD (Create, Read, Update, Delete) operations on the database. The following challenges are addressed in this build:
 
@@ -246,6 +246,7 @@ The Project adopts a Model-View-Controller approach. The database is isolated an
 
 ## Afterthoughts
 The challenge puts your thoughts and experience to the test. On paper, the problem sounds simple. But despite working with REST APIs and having previous hands-on experience, many uncertainties arise during implementation. For me, designing and implementing the solution was not a challenge, but to test and dockerize it took some serious time. In the process, I also found bugs that I fixed. I never automated my tests on REST APIs in the past. Also, I had only limited understanding and knowledge of docker that I acquired during my internships. But working with this challenge, I certainly improved and expanded my knowledge of these technologies. I feel the application I have written meets standard coding practices.  
+
 ---
 
 **Author :** Saipranav Koyyada (saipranav_29@outlook.com)
