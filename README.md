@@ -175,57 +175,57 @@ Filter and sorting parameters are query parameters available only for GET /api/v
 
 
 ## Examples
-### Fetch all restaurants
+### - Fetch all restaurants
 <img  src="./assets/images/fetch_no_params.png">
 
-### Filtering restaurants
+### - Filtering restaurants
 <img  src="./assets/images/fetch_filtered.png">
 
-### Sorting restaurants
+### - Sorting restaurants
 <img  src="./assets/images/fetch_sorted.png">
 
-### Using filter and sort together
+### - Using filter and sort together
 <img  src="./assets/images/fetch_sorted_filtered.png">
 
 ---
 
-### Get more information about one specific restaurant
+### - Get more information about one specific restaurant
 <img  src="./assets/images/fetch_specific.png">
 
 ---
 
-### Add a new restaurant
+### - Add a new restaurant
 <img  src="./assets/images/add_1.png">
 
 ---
 
-### Add many restaurants at a once
+### - Add many restaurants at a once
 <img  src="./assets/images/add_many.png">
 
 ---
 
-### Update an exisiting restaurant
+### - Update an exisiting restaurant
 <img  src="./assets/images/update.png">
 
 ---
 
-### Delete an exisiting restaurant
+### - Delete an exisiting restaurant
 <img  src="./assets/images/delete_1.png">
 
 ---
 
-### Delete all restaurants
+### - Delete all restaurants
 <img  src="./assets/images/delete_all.png">
 
 ---
 
-### Add/Update payload validation
+### - Add/Update payload validation
 <img  src="./assets/images/add_req_validation.png">
 <img  src="./assets/images/update_req_validation.png">
 
 ---
 
-### Invalid request response
+### - Invalid request response
 <img  src="./assets/images/fetch_specific_invalid.png">
 <img  src="./assets/images/update_invalid.png">
 <img  src="./assets/images/delete_invalid.png">
