@@ -4,17 +4,28 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon app.js"
+    "start": "nodemon server.js",
+    "test-local": "mocha tests/restaurants.test.js --exit",
+    "build": "docker-compose -f docker-compose.yml build",
+    "test": "docker-compose -f docker-compose.test.yml up --build --abort-on-container-exit",
+    "production": "docker-compose -f docker-compose.yml up"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validator": "^6.9.2",
     "helmet": "^4.4.1",
     "mongoose": "^5.11.15",
+    "mongoose-sequence": "^5.3.1",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.7"
+  },
+  "devDependencies": {
+    "mocha": "^8.3.0",
+    "supertest": "^6.1.3",
+    "tape": "^5.1.1"
   }
 }

@@ -1,4 +1,10 @@
+/*
+Author: Koyyada Sai Pranav
+Last modified: 13/02/2021 
+*/
+
 // Import dependencies
+require("dotenv").config();
 const express = require('express')
 const app = express()
 const helmet = require("helmet")
@@ -20,4 +26,6 @@ app.use("/api/v1/restaurants/", restaurants)
 
 // Port config
 const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Listening on port ${port}...`));
+const server = app.listen(port, () => console.log(`Listening on port ${port}\n-----------------------`));
+
+module.exports = server

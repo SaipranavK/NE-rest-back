@@ -1,0 +1,20 @@
+version: '3.3'
+services:
+  mongo:
+    container_name: mongo-test
+    image: mongo
+    ports:
+      - '27017:27017'
+
+  node_test:
+    container_name: nent-tech-trainee-test
+    restart: always
+    build: 
+      context: .
+      dockerfile: Dockerfile.test
+    ports:
+      - '80:3000'
+    links:
+      - mongo
+    
+  

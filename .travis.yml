@@ -1,0 +1,21 @@
+language: node_js
+node_js:
+  - "node"
+
+services:
+  - mongodb
+  - docker
+
+# Travis may have a running server of mongo
+# thus it will block creation of new mongo on same port by docker-compose resulting in build failure
+# hence kill running server of mongo if any before test
+before_script:
+  - sudo killall mongod
+
+# build the project
+install:
+  - npm run build
+
+# run tests
+script:
+  - npm test
