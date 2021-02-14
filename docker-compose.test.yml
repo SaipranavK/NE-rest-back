@@ -5,8 +5,9 @@ services:
     image: mongo
     ports:
       - '27017:27017'
-  node:
-    container_name: nent-tech-trainee
+
+  node_test:
+    container_name: nent-tech-trainee-test
     restart: always
     build: 
       context: .

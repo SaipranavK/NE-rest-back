@@ -1,5 +1,5 @@
 FROM node:12-alpine
-WORKDIR /src/NE-rest-back/
+WORKDIR /src/NE-rest-back-test/
 ENV NODE_ENV=dev
 ENV RUN=docker
 COPY package*.json ./

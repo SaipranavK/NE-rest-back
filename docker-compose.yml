@@ -6,8 +6,8 @@ services:
     ports:
       - '27017:27017'
 
-  node:
-    container_name: nent-tech-trainee
+  node_prod:
+    container_name: nent-tech-trainee-prod
     restart: always
     build: 
       context: .
