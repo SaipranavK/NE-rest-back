@@ -6,8 +6,8 @@ services:
     ports:
       - '27017:27017'
 
-  node_test:
-    container_name: nent-tech-trainee-test
+  saipranav-node-test:
+    container_name: saipranav-nent-tech-trainee-test
     restart: always
     build: 
       context: .
