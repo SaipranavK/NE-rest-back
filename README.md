@@ -91,6 +91,7 @@ Request Type | URL | Description | Payload | Parameters |
 |DELETE|/api/v1/restaurants/all|Delete all restaurants|None|None|
 
 ## Payloads
+These snippets are available as json [here](./example_payloads)
 ### Add new restaurant
 <pre><code><b>{
 	"opening_hours":  [
